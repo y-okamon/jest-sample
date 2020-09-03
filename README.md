@@ -107,7 +107,7 @@ jest foo
 
 # matcher(マッチャー)
 
-### 単純な値
+## 単純な値
 ```javascript
 test('two plus two is four', () => {
   expect(2 + 2).toBe(4); // OK
@@ -120,7 +120,7 @@ test('string check', () => {
 });
 ```
 
-### オブジェクトや配列
+## オブジェクトや配列
 `toEqual`は、オブジェクトまたは配列の全フィールドを再帰的にチェックする。  
   
 オブジェクトの比較
@@ -206,3 +206,88 @@ test('zero', () => {
   expect(z).toBeFalsy();
 });
 ```
+
+## 数値
+```javascript
+test('two plus two', () => {
+  const value = 2 + 2;
+  // all OK
+  expect(value).toBeGreaterThan(3);
+  expect(value).toBeGreaterThanOrEqual(3.5);
+  expect(value).toBeLessThan(5);
+  expect(value).toBeLessThanOrEqual(4.5);
+
+  // 数値の場合は、toBe と toEqual は同等である
+  expect(value).toBe(4);
+  expect(value).toEqual(4);
+});
+```
+
+浮動小数点の値が同一であるか確認する場合は`toBeCloseTo`を使う。  
+→丸め込み誤差が原因で期待通り動作しないため
+
+```javascript
+test('adding floating point numbers', () => {
+  const value = 0.1 + 0.2;
+  expect(value).toBe(0.3);        // NG
+  expect(value).toBeCloseTo(0.3); // OK
+});
+```
+
+`toBe`でもOKになる場合はあるが`toBeCloseTo`と使い分けるのは面倒なので常に後者を使う方が良さそう。
+```javascript
+test('adding floating point numbers', () => {
+  const value = 0.5 + 0.25;
+  expect(value).toBe(0.75);        // OK
+  expect(value).toBeCloseTo(0.75); // OK
+});
+```
+## 文字列
+正規表現を使用できる。
+```javascript
+test('there is no I in team', () => {
+  expect('team').not.toMatch(/I/); // OK
+});
+
+test('but there is a "stop" in Christoph', () => {
+  expect('Christoph').toMatch(/stop/); // OK
+});
+```
+
+## 配列と反復可能なオブジェクト
+`toContain`を使用すると、配列や反復可能なオブジェクトに特定のアイテムが含まれていることを確認できる。
+```javascript
+const shoppingList = [
+  'apple',
+  'orange',
+  'banana',
+];
+
+test('toContain check', () => {
+  expect(shoppingList).toContain('banana'); // OK
+  expect(new Set(shoppingList)).toContain('apple'); // OK
+});
+```
+
+## 例外
+`toThrow`を使用すると、例外をスローすることを確認できる。
+```javascript
+function doAction() {
+  throw new Error('test error throw function.');
+}
+
+test('throw Error check', () => {
+  expect(doAction).toThrow(); // OK
+  expect(doAction).toThrow(Error); // OK
+
+  // エラーメッセージまたは正規表現指定も可能
+  expect(doAction).toThrow('test error'); // OK
+  expect(doAction).toThrow('error test'); // NG
+  expect(doAction).toThrow('test error throw function.'); // OK
+  expect(doAction).toThrow(/throw/); // OK
+});
+```
+
+# その他
+公式リファレンスを参照のこと(matcherだけでもかなりの数がある)  
+https://jestjs.io/docs/ja/expect
