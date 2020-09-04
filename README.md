@@ -97,6 +97,7 @@ npm install jest --global
 ```
 
 テスト実行方法
+Jestは自動的にxxxx.test.jsという名前のファイルを見つけてテストします。
 ```
 # ./hoge.test.js をテストする場合
 jest hoge
