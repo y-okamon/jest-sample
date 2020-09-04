@@ -107,7 +107,6 @@ test('throw Error check', () => {
 
   // エラーメッセージまたは正規表現指定も可能
   expect(doAction).toThrow('test error');
-  expect(doAction).toThrow('error test');
   expect(doAction).toThrow('test error throw function.');
   expect(doAction).toThrow(/throw/);
 });
