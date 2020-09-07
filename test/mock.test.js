@@ -104,3 +104,24 @@ test('カスタムマッチャ', () => {
     3
   ]);
 });
+
+// ======== jest.spyOn ========
+
+describe('mock spyOn test', () => {
+  const { item } = require('../mock');
+
+  test('item title test', () => {
+    // mockReturnValueOnceによって自由にモック化できる。
+    // jest.spyOnだけでは(実際の)モック化されていない関数が実行される。
+    // jset.spyOn(モジュール変数, '関数名')
+    const spy = jest
+      .spyOn(item, 'title')
+      .mockReturnValueOnce('item sub title');
+
+    // mockReturnValueOnceによって'item title'ではなくなる。
+    expect(item.title()).toBe('item sub title');
+    expect(spy).toHaveBeenCalled();
+
+    spy.mockRestore();
+  });
+});

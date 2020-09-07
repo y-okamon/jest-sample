@@ -4,6 +4,14 @@ function forEach(items, callback) {
   }
 }
 
+// spyOn確認用
+const item = {
+  title() {
+    return 'item title';
+  }
+};
+
 module.exports = {
-  forEach: forEach
+  forEach: forEach,
+  item: item
 }
