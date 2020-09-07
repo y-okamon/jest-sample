@@ -20,9 +20,9 @@ test('モック関数を利用する', () => {
 
 test('モックの戻り値', () => {
   const myMock = jest.fn();
-  console.log(myMock()); // > undefined
+  // console.log(myMock()); // undefined
   myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true);
-  console.log(myMock(), myMock(), myMock(), myMock());
+  // console.log(myMock(), myMock(), myMock(), myMock()); // 10 x true true
 });
 
 test('モックの戻り値', () => {
@@ -32,15 +32,15 @@ test('モックの戻り値', () => {
   filterTestFn.mockReturnValueOnce(true).mockReturnValueOnce(false);
 
   const result = [11, 12].filter(num => filterTestFn(num));
-  console.log(result); // [11] (trueのみが抽出されている)
-  console.log(filterTestFn.mock.calls); // [ [ 11 ], [ 12 ] ]
+  // console.log(result); // [11] (trueのみが抽出されている)
+  // console.log(filterTestFn.mock.calls); // [ [ 11 ], [ 12 ] ]
 });
 
 // ======== モックの実装 ========
 test('モックの実装', () => {
   const myMockFn = jest.fn(cb => cb(null, true));
 
-  myMockFn((err, val) => console.log(val));
+  // myMockFn((err, val) => console.log(val)); // true
 });
 
 // ======== モックの実装 ========
@@ -64,8 +64,8 @@ test('モックの実装_複数回の呼び出しで異なる結果を得る', (
     .mockImplementationOnce(cb => cb(null, true))
     .mockImplementationOnce(cb => cb(null, false));
 
-  myMockFn((err, val) => console.log(val)); // true
-  myMockFn((err, val) => console.log(val)); // false
+  // myMockFn((err, val) => console.log(val)); // true
+  // myMockFn((err, val) => console.log(val)); // false
 });
 
 test('モックの実装_mockImplementationOnceメソッドを使い切った場合', () => {
@@ -74,7 +74,7 @@ test('モックの実装_mockImplementationOnceメソッドを使い切った場
     .mockImplementationOnce(() => '1st call')
     .mockImplementationOnce(() => '2nd call');
 
-  console.log(myMockFn(), myMockFn(), myMockFn(), myMockFn());
+  // console.log(myMockFn(), myMockFn(), myMockFn(), myMockFn()); // 1st call 2nd call default default
 });
 
 // ======== カスタムマッチャ ========
@@ -100,9 +100,7 @@ test('カスタムマッチャ', () => {
 
   // 最後に指定の引数で呼ばれた
   expect(myMock).toHaveBeenLastCalledWith(3);
-  expect(myMock.mock.calls[myMock.mock.calls.length - 1]).toEqual([
-    3
-  ]);
+  expect(myMock.mock.calls[myMock.mock.calls.length - 1]).toEqual([3]);
 });
 
 // ======== jest.spyOn ========
